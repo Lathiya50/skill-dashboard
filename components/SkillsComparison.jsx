@@ -1,4 +1,5 @@
 import Select from "react-select";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { SKILL_LEVEL_COLORS } from "@/constants/colors";
 import { calculateTotalExperience, getSkillLevel } from "@/lib/utils";
@@ -16,31 +17,41 @@ export default function SkillsComparison({
       selectedSkills.some((s) => s.value === skill)
   );
 
+  console.log("selectedUsers", selectedUsers);
   return (
     <Card>
-      <CardHeader className="pb-0">
-        <div className="flex gap-2">
-          <button className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors">
-            Compare View
-          </button>
-          <button className="px-4 py-2 bg-gray-100 rounded hover:bg-gray-200 transition-colors">
-            Individual view
-          </button>
-          <button className="px-4 py-2 bg-gray-100 rounded hover:bg-gray-200 transition-colors">
-            Shortlisted candidates
-          </button>
-
-          <div className="ml-auto w-64">
-            <Select
-              isMulti
-              options={skillOptions}
-              value={selectedSkills}
-              onChange={onSkillChange}
-              className="basic-multi-select"
-              classNamePrefix="select"
-              placeholder="Filter by skills..."
-            />
+      <CardHeader className=" flex flex-col gap-2 pb-0">
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex gap-2">
+            <button className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors">
+              Compare View
+            </button>
+            <button className="px-4 py-2 bg-gray-100 rounded hover:bg-gray-200 transition-colors">
+              Individual view
+            </button>
+            <button className="px-4 py-2 bg-gray-100 rounded hover:bg-gray-200 transition-colors">
+              Shortlisted candidates
+            </button>
           </div>
+          <div>
+            <button className="p-2 hover:bg-gray-100 rounded-full transition-colors">
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <button className="p-2 hover:bg-gray-100 rounded-full transition-colors">
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+        <div className="w-64">
+          <Select
+            isMulti
+            options={skillOptions}
+            value={selectedSkills}
+            onChange={onSkillChange}
+            className="basic-multi-select"
+            classNamePrefix="select"
+            placeholder="Filter by skills..."
+          />
         </div>
       </CardHeader>
       <CardContent>
@@ -54,11 +65,14 @@ export default function SkillsComparison({
                 <tr>
                   <td className="text-left p-2">Experiences</td>
                   {selectedUsers.map((user) => (
-                    <th
-                      key={user.id}
-                      className="w-8 h-8 rounded mx-auto text-sm bg-gray-200"
-                    >
-                      {calculateTotalExperience(user.user?.workEx)}
+                    <th>
+                      <span>{user?.name?.slice(0, 2)}</span>
+                      <div
+                        key={user.id}
+                        className="w-6 h-6 rounded mx-auto text-sm bg-gray-200 space-x-1"
+                      >
+                        {calculateTotalExperience(user.user?.workEx)}
+                      </div>
                     </th>
                   ))}
                 </tr>
